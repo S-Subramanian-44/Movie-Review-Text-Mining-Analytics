@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie_title }} - Movie Review Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ movie_title }} - Movie Review Details</h1>
+
+        <h2>Word Cloud</h2>
+        <img src="{{ url_for('static', filename=wordcloud_filename) }}" alt="Word Cloud">
+
+        <h2>Keyword Search</h2>
+        <form id="searchForm" action="{{ url_for('search_keyword') }}" method="post">
+            <input id="keywordInput" type="text" name="keyword" placeholder="Enter keyword">
+            <input type="hidden" name="movie_title" value="{{ movie_title }}">
+            <input type="submit" value="Search">
+        </form>
+        <div id="keywordCount">
+            {% if keyword_count is defined %}
+                Keyword Count: {{ keyword_count }}
+            {% endif %}
+            {% if exact_matches %}
+                <p>Number of exact matches: {{ exact_matches|length }}</p>
+            {% endif %}
+            {% if variations_matches %}
+                <p>Number of variations matches: {{ variations_matches|length }}</p>
+            {% endif %}
+            {% if phrase_matches %}
+                <p>Number of phrase matches: {{ phrase_matches|length }}</p>
+            {% endif %}
+
+        </div>
+
+        <h2>Sentiment Analysis</h2>
+        {% if sentiment_plot_path %}
+            <img src="{{ url_for('static', filename=sentiment_plot_path) }}" alt="Sentiment Analysis Plot">
+        {% endif %}
+        <h2>Metric Scores</h2>
+        <p>Precision: {{ precision }}</p>
+        <p>Recall: {{ recall }}</p>
+        <p>F-score: {{ f_score }}</p>
+        <h2>Summarized Reviews</h2>
+        <ul>
+            {% for review in summarized_reviews %}
+                <li>{{ review }}</li>
+            {% endfor %}
+        </ul>
+        <form action="/">
+            <button type="submit" class="home-button">Home</button> 
+        </form>
+    </div>
+</body>
+</html>

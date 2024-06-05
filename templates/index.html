@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Search</h1>
+        <form method="POST" action="/">
+            {{ form.hidden_tag() }}
+            {{ form.movie_title.label }} {{ form.movie_title }}
+            <button type="submit">Search</button>
+        </form>
+        <h2>Existing Movies</h2>
+        <div class="movie-columns">
+            {% for movie in movies %}
+                <div class="movie-box{% if movie in matched_movies %} matched{% endif %}">
+                    <a href="{{ url_for('existing_movie', movie_title=movie) }}">{{ movie }}</a>
+                </div>
+            {% endfor %}
+        </div>
+        <form action="/">
+            <button type="submit" class="home-button">Home</button>
+        </form>
+    </div>
+</body>
+</html>
